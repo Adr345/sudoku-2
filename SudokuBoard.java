@@ -37,25 +37,38 @@ public class SudokuBoard {
                }
             }
       }
-      System.out.println("pass empty");
        return true;
    }
 
    private boolean hasNoDuplicates(int[][] board) {
-      Set<Integer> set = new HashSet<>();
-      for (int r = 0; r < board.length; r++) {
-         for (int c = 0; c < board[r].length; c++) {
-            int value = board[r][c];
-            if (value != 0) {
-                if (set.contains(value)) {
-                    return false;
-                }
-                set.add(value);
-            }
-        }
-      }
-    System.out.println("pass duplicates");
-    return true;
+       // Check for duplicates in each row
+       for (int r = 0; r < board.length; r++) {
+           Set<Integer> rowSet = new HashSet<>();
+           for (int c = 0; c < board[r].length; c++) {
+               int value = board[r][c];
+               if (value != 0) {
+                   if (rowSet.contains(value)) {
+                       return false; 
+                   }
+                   rowSet.add(value);
+               }
+           }
+       }
+      // Check for duplicates in each colomuns
+       for (int c = 0; c < board[0].length; c++) {
+           Set<Integer> colSet = new HashSet<>();
+           for (int r = 0; r < board.length; r++) {
+               int value = board[r][c];
+               if (value != 0) {
+                   if (colSet.contains(value)) {
+                       return false; 
+                   }
+                   colSet.add(value);
+               }
+           }
+       }
+   
+       return true; 
    }
 
     
@@ -81,10 +94,9 @@ public class SudokuBoard {
    }
 
    public boolean isValid(){
-      if( empty(board) && hasNoDuplicates(board)){// && checkMini()){
+      if( empty(board) && hasNoDuplicates(board) && checkMini()){
          return true;
       }
-      System.out.println("The file might be wrong");
       return false;
    }
    
