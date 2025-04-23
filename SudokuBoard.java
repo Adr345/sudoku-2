@@ -17,7 +17,7 @@ public class SudokuBoard {
                if(num == '.') {
                   board[r][c] = 0;
                }else {
-                  board[r][c] = num;
+                  board[r][c] = num - '0';
                }
             }
          }
@@ -28,6 +28,66 @@ public class SudokuBoard {
          System.out.println(filename + " does not meet format expectations.");
       }
    }
+   
+   private boolean empty(int[][] board){
+      for(int r = 0; r < board.length ; r++){
+         for(int c= 0 ; c < board[r].length ; c++){
+            if (board[r][c] < 0 || board[r][c] > 9) {
+                return false;
+               }
+            }
+      }
+      System.out.println("pass empty");
+       return true;
+   }
+
+   private boolean hasNoDuplicates(int[][] board) {
+      Set<Integer> set = new HashSet<>();
+      for (int r = 0; r < board.length; r++) {
+         for (int c = 0; c < board[r].length; c++) {
+            int value = board[r][c];
+            if (value != 0) {
+                if (set.contains(value)) {
+                    return false;
+                }
+                set.add(value);
+            }
+        }
+      }
+    System.out.println("pass duplicates");
+    return true;
+   }
+
+    
+      private int[][] miniSquare(int[][] board , int spot) {
+      int[][] mini = new int[3][3];
+      for(int r = 0; r < 3; r++) {
+         for(int c = 0; c < 3; c++) {
+            mini[r][c] = board[(spot - 1) / 3 * 3 + r][(spot - 1) % 3 * 3 + c];
+         }
+      }
+ 
+      return mini;
+   }
+   
+   private boolean checkMini() {
+      for (int i = 1; i <= 9; i++) {
+        if (!hasNoDuplicates(miniSquare(board , i))) {
+            return false;
+         }
+      }
+       System.out.println("pass mini");
+       return true;
+   }
+
+   public boolean isValid(){
+      if( empty(board) && hasNoDuplicates(board)){// && checkMini()){
+         return true;
+      }
+      System.out.println("The file might be wrong");
+      return false;
+   }
+   
    
    public String toString() {
       String build = " -----------------\n";
