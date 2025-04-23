@@ -84,14 +84,24 @@ public class SudokuBoard {
    }
    
    private boolean checkMini() {
-      for (int i = 1; i <= 9; i++) {
-        if (!hasNoDuplicates(miniSquare(board , i))) {
-            return false;
+       for(int i = 1 ; i <= 9 ; i++){
+         int[][] mini = miniSquare( board , i);
+         Set<Integer> set = new HashSet<>();
+         for (int r = 0; r < mini.length; r++) {
+            for (int c = 0; c < mini[r].length; c++) {
+               int value = mini[r][c];
+               if (value != 0) {
+                  if (set.contains(value)) {
+                     return false;
+                 }
+                 set.add(value);
+               }
+            }
          }
-      }
-       System.out.println("pass mini");
-       return true;
-   }
+       }
+     System.out.println("pass duplicates");
+     return true;
+    }
 
    public boolean isValid(){
       if( empty(board) && hasNoDuplicates(board) && checkMini()){
@@ -100,7 +110,26 @@ public class SudokuBoard {
       return false;
    }
    
-   
+   public boolean isSolved() {
+      Map<Integer,Integer> solve = new TreeMap <Integer,Integer>();
+         for(int r = 0; r < board.length ; r++){
+            for(int c= 0 ; c < board[r].length ; c++){
+               if(!solve.containsKey(board[r][c])){
+                  solve.put(board[r][c] , 1);
+               } else {
+                  int currentCount = solve.get(board[r][c]);
+                  solve.put(board[r][c] , currentCount + 1);
+               } 
+            }
+         }
+         
+         for(Integer count : solve.values()){
+            if(count != 9){
+               return false;
+            }
+         } 
+         return isValid();
+   }
    public String toString() {
       String build = " -----------------\n";
       for(int r = 0; r < board.length; r++) {
@@ -118,20 +147,18 @@ public class SudokuBoard {
 /*
 # PROGRAM OUTPUT
 
-  ----jGRASP exec: java SudokuEngine
-  -----------------
- |	50|	0|	0|	49|	0|	53|	0|	0|	51|	|
- |	0|	53|	52|	0|	0|	0|	55|	49|	0|	|
- |	0|	49|	0|	50|	0|	51|	0|	56|	0|	|
- |	54|	0|	50|	56|	0|	55|	51|	0|	52|	|
- |	0|	0|	0|	0|	0|	0|	0|	0|	0|	|
- |	49|	0|	53|	51|	0|	57|	56|	0|	54|	|
- |	0|	50|	0|	55|	0|	49|	0|	54|	0|	|
- |	0|	56|	49|	0|	0|	0|	50|	52|	0|	|
- |	55|	0|	0|	52|	0|	50|	0|	0|	49|	|
-  -----------------
- 
- 
-  ----jGRASP: Operation complete.
+Checking empty board...pass duplicates
+passed.
+ Checking incomplete, valid board...pass duplicates
+passed.
+Checking complete, valid board...pass duplicates
+pass duplicates
+passed.
+Checking dirty data board...passed.
+Checking row violating board...passed.
+Checking col violating board...passed.
+Checking row&col violating board...passed.
+Checking mini-square violating board...passed.
+**** HORRAY: ALL TESTS PASSED ****
 
 */
