@@ -29,7 +29,7 @@ public class SudokuBoard {
       }
    }
    
-   private boolean empty(int[][] board){
+   private boolean empty(){
       for(int r = 0; r < board.length ; r++){
          for(int c= 0 ; c < board[r].length ; c++){
             if (board[r][c] < 0 || board[r][c] > 9) {
@@ -40,7 +40,7 @@ public class SudokuBoard {
        return true;
    }
 
-   private boolean hasNoDuplicates(int[][] board) {
+   private boolean hasNoDuplicates() {
        // Check for duplicates in each row
        for (int r = 0; r < board.length; r++) {
            Set<Integer> rowSet = new HashSet<>();
@@ -104,10 +104,7 @@ public class SudokuBoard {
     }
 
    public boolean isValid(){
-      if( empty(board) && hasNoDuplicates(board) && checkMini()){
-         return true;
-      }
-      return false;
+      return empty() && hasNoDuplicates() && checkMini();
    }
    
    public boolean isSolved() {
