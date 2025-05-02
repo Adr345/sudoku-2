@@ -108,13 +108,31 @@ public class SudokuBoard {
    }
    
    public boolean isSolved() {
-       for (int r = 0; r < 9; r++) {
-           for (int c = 0; c < 9; c++) {
-               if (board[r][c] == 0){ return false; }
-           }
-       }
-       return isValid();
-   }
+       Map<Integer,Integer> solve = new TreeMap <Integer,Integer>();
+          for(int r = 0; r < board.length ; r++){
+             for(int c= 0 ; c < board[r].length ; c++){
+                if(!solve.containsKey(board[r][c])){
+                   solve.put(board[r][c] , 1);
+                } else {
+                   int currentCount = solve.get(board[r][c]);
+                   solve.put(board[r][c] , currentCount + 1);
+                } 
+             }
+          }
+          
+          if (solve.size() != 9) {
+            return false;
+          }
+          
+          for(Integer count : solve.values()){
+             if(count != 9){
+                return false;
+             }
+          } 
+          return isValid();
+    }
+
+
 
   
    public String toString() {
